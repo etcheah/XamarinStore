@@ -13,6 +13,7 @@
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
     <AndroidApplication>True</AndroidApplication>
+    <TargetFSharpCoreVersion>4.3.0.0</TargetFSharpCoreVersion>
     <AndroidResgenFile>Resources\Resource.designer.fs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <AssemblyName>XamarinStore</AssemblyName>
@@ -50,7 +51,7 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="FSharp.Core" />
+    <Reference Include='FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'>
     <Reference Include="Mono.Android" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>Components\json.net-4.5.11\lib\android\Newtonsoft.Json.dll</HintPath>
@@ -142,7 +143,19 @@
       <Link>Shared\SharedScript.fsx</Link>
     </None>
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
+  <Choose>
+  <When Condition="'$(VisualStudioVersion)' == '11.0'">
+    <PropertyGroup>
+      <FSharpTargetsPath>$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets</FSharpTargetsPath>
+    </PropertyGroup>
+  </When>
+  <Otherwise>
+    <PropertyGroup>
+      <FSharpTargetsPath>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\FSharp\Microsoft.FSharp.Targets</FSharpTargetsPath>
+    </PropertyGroup>
+  </Otherwise>
+</Choose>
+<Import Project="$(FSharpTargetsPath)" Condition="Exists('$(FSharpTargetsPath)')" />
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Helpers\" />
